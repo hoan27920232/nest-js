@@ -13,7 +13,7 @@ import { HttpErrorFilter } from 'src/shared/http-error-filter';
 import { IdeaDTO } from './idea.dto';
 import { IdeaService } from './idea.service';
 /* eslint-disable */
-@Controller('idea')
+@Controller('api/idea')
 export class IdeaController {
   constructor(private ideaService: IdeaService) {}
   private logger = new Logger('IdeaController');
