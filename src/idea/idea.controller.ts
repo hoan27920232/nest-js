@@ -6,7 +6,9 @@ import {
   Param,
   Post,
   Put,
+  UseFilters,
 } from '@nestjs/common';
+import { HttpErrorFilter } from 'src/shared/http-error-filter';
 import { IdeaDTO } from './idea.dto';
 import { IdeaService } from './idea.service';
 /* eslint-disable */
