@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   Post,
   Put,
@@ -15,12 +16,14 @@ import { IdeaService } from './idea.service';
 @Controller('idea')
 export class IdeaController {
   constructor(private ideaService: IdeaService) {}
+  private logger = new Logger('IdeaController');
   @Get()
   showAllIdeas() {
     return this.ideaService.showAll();
   }
   @Post()
   createIdea(@Body() data: IdeaDTO) {
+    this.logger.log(JSON.stringify(data));
     return this.ideaService.create(data);
   }
   @Get(':id')
@@ -29,10 +32,11 @@ export class IdeaController {
   }
   @Put(':id')
   updateIdea(@Param('id') id: string, @Body() data: Partial<IdeaDTO>) {
-    this.ideaService.update(id, data);
+    this.logger.log(JSON.stringify(data));
+    return this.ideaService.update(id, data);
   }
   @Delete(':id')
-  destroyIdea(@Param('id') id:string) {
-      this.ideaService.destroy(id);
+  destroyIdea(@Param('id') id: string) {
+    return this.ideaService.destroy(id);
   }
 }
