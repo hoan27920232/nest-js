@@ -1,9 +1,10 @@
 /* eslint-disable */
 
-import { BeforeInsert, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import * as bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 import { UserRO } from "./user.dto";
+import { IdeaEntity } from "src/idea/idea.entity";
 @Entity('user')
 export class UserEntity {
     @PrimaryGeneratedColumn('uuid') id: string;
@@ -21,12 +22,16 @@ export class UserEntity {
     async hashPassword() {
         this.password = await bcrypt.hash(this.password, 10);
     }
-
+    @OneToMany(type => IdeaEntity, idea => idea.author)
+    ideas: IdeaEntity[];
     toResponseObject(showToken: boolean = true) : UserRO{
         const { id, created, username, token } = this;
         const resToken: any = { id, created, username };
         if(showToken) {
             resToken.token = token;
+        }
+        if(this.ideas) {
+            resToken.ideas = this.ideas
         }
         return resToken;
     }

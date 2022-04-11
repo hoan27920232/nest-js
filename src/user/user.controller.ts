@@ -1,6 +1,8 @@
 /* eslint-disable */
 
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/shared/auth.gaurd';
+import { User } from './user.decorator';
 import { UserDTO } from './user.dto';
 import { UserService } from './user.service';
 
@@ -8,7 +10,9 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private userService: UserService) {}
   @Get('api/users')
-  showAllUsers() {
+  @UseGuards(new AuthGuard())
+  showAllUsers(@User() user) {
+    console.log(user);
     return this.userService.showAll();
   }
   @Post('login')
